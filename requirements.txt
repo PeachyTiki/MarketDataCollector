@@ -1,0 +1,5 @@
+pandas
+yfinance
+openpyxl
+matplotlib
+alpha_vantage

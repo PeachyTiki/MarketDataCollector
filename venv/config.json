@@ -1,0 +1,6 @@
+{
+    "api_key": "9HNF33QXL16ZJ64Y",
+    "stocks": ["AAPL", "MSFT", "TSLA", "GOOGL", "AMZN"],
+    "database": "stocks_info.db",
+    "output_excel": "stock_report.xlsx"
+}
