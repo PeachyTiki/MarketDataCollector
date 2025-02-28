@@ -1,0 +1,201 @@
+Market Data Collector - Full Process Documentation
+Overview
+# Market Data Collector - Full Process Documentation
+## Overview
+This document outlines the entire development process of the **Market Data Collector** bot, detailing the step-by-step changes, improvements, and troubleshooting performed to build an automated stock market data retrieval and analysis system.
+---
+## **1️⃣ Initial Setup**
+### Steps:
+✅ Installed Python and necessary dependencies.
+✅ Set up a virtual environment (`venv`).
+✅ Installed required packages (`yfinance`, `pandas`, `sqlite3`, `openpyxl`, `matplotlib`).
+✅ Created initial script `fetch_stock_data.py` using Yahoo Finance API.
+### Issues Encountered:
+❌ Yahoo Finance API inconsistencies—data retrieval failures.
+✔ **Solution:** Switched to **Alpha Vantage API** for more reliability.
+---
+## **2️⃣ Fetching Stock Data & Storing in SQLite**
+### Changes Made:
+✅ Configured Alpha Vantage API in `fetch_stock_data.py`.
+✅ Read stock symbols from `stocks.txt`.
+✅ Stored fetched stock data in an **SQLite database (`stocks_info.db`)**.
+✅ Ensured **no duplicate entries** using SQL `PRIMARY KEY (Stock_Symbol, Date)`.
+✅ Limited fetching to the last **two days** to optimize API limits.
+### Issues Encountered:
+❌ Alpha Vantage's **free tier limit (25 requests per day)**.
+✔ **Solution:** Limited fetch frequency to **once per day**.
+---
+## **3️⃣ Exporting Data to Excel**
+### Changes Made:
+✅ Created `export_to_excel.py` to output stock data into an **Excel file (`stock_report.xlsx`)**.
+✅ Stored each stock's data in **separate sheets** named after the stock symbol.
+✅ Added a **summary sheet (`DataOverview`)** displaying all stocks side by side.
+✅ Inserted a **blank column** between each stock in `DataOverview` for readability.
+✅ Applied **alternating row colors** (light blue) for better visualization.
+### Issues Encountered:
+❌ `ValueError: cannot insert, already exists` when adding blank columns.
+✔ **Solution:** Fixed logic by ensuring **unique column names**.
+---
+## **4️⃣ Trend Analysis & Visualization**
+### Changes Made:
+✅ Created `analyze_stock_trends.py` for **moving averages & Bollinger Bands**.
+✅ Plotted each stock’s trends using **Matplotlib**.
+✅ Saved all plots inside the **`analysis_plots/`** directory.
+✅ Ensured images **overwrite themselves** to prevent duplicates.
+### Issues Encountered:
+❌ **Blank plots** due to incorrect DataFrame filtering.
+✔ **Solution:** Adjusted logic to **group stock data properly** before plotting.
+---
+## **5️⃣ Automation & Task Scheduling**
+### Changes Made:
+✅ Automated **fetch_stock_data.py** via **Windows Task Scheduler** (Runs daily at 10 PM CET).
+✅ Scheduled **export_to_excel.py** to run **after fetching**.
+✅ Ensured scripts run **even when PC is asleep**.
+### Issues Encountered:
+❌ Task Scheduler **failed to start due to incorrect user permissions**.
+✔ **Solution:** Configured Task Scheduler to run scripts as **admin**.
+---
+## **6️⃣ Configuration File (`config.json`)**
+### Changes Made:
+✅ Created `config.json` to store:
+- **Alpha Vantage API key**
+- **Database file path**
+- **Output Excel file path**
+- **Backup folder path**
+✅ Updated all scripts to **read from config.json** instead of hardcoding values.
+### Issues Encountered:
+❌ `KeyError: 'output_excel'` due to missing config entry.
+✔ **Solution:** Ensured `config.json` contains **all required keys**.
+---
+## **7️⃣ Backup System**
+### Changes Made:
+✅ Implemented **database backup system** (`backup.py`).
+✅ Automatically **copies `stocks_info.db`** to `backups/` before updates.
+✅ Appends **timestamp** to backup file names.
+### Issues Encountered:
+❌ Backup system **failed due to locked database**.
+✔ **Solution:** Ensured SQLite connection **closes before backup starts**.
+---
+## **8️⃣ Final GitHub Setup**
+### Steps:
+✅ Created **README.md** with complete setup instructions.
+✅ Uploaded project to **GitHub**.
+✅ Organized project structure:
+```
+MarketDataCollector/
+│── fetch_stock_data.py # Fetches stock data
+│── export_to_excel.py # Exports stock data to Excel
+│── analyze_stock_trends.py # Generates stock analysis plots
+│── backup.py # Creates database backups
+│── config.json # Stores API key & settings
+│── stocks_info.db # SQLite database
+│── backups/ # Stores backups
+│── analysis_plots/ # Stores stock trend images
+│── requirements.txt # Python dependencies
+│── README.md # Project documentation
+```
+---
+## **Next Steps**
+✅ **Market Data Collector bot is complete!** 🎉
+For future improvements, consider:
+- Expanding analysis **beyond moving averages** (e.g., RSI, MACD).
+- Implementing **cloud-based execution** to eliminate PC dependency.
+- Adding **automated trading signals** based on historical patterns.
+This concludes the full documentation of the **Market Data Collector** project.
+
+1️⃣ Initial Setup
+Steps:
+✅ Installed Python and necessary dependencies.
+ ✅ Set up a virtual environment (venv).
+ ✅ Installed required packages (yfinance, pandas, sqlite3, openpyxl, matplotlib).
+ ✅ Created initial script fetch_stock_data.py using Yahoo Finance API.
+Issues Encountered:
+❌ Yahoo Finance API inconsistencies—data retrieval failures.
+ ✔ Solution: Switched to Alpha Vantage API for more reliability.
+
+2️⃣ Fetching Stock Data & Storing in SQLite
+Changes Made:
+✅ Configured Alpha Vantage API in fetch_stock_data.py.
+ ✅ Read stock symbols from stocks.txt.
+ ✅ Stored fetched stock data in an SQLite database (stocks_info.db).
+ ✅ Ensured no duplicate entries using SQL PRIMARY KEY (Stock_Symbol, Date).
+ ✅ Limited fetching to the last two days to optimize API limits.
+Issues Encountered:
+❌ Alpha Vantage's free tier limit (25 requests per day).
+ ✔ Solution: Limited fetch frequency to once per day.
+
+3️⃣ Exporting Data to Excel
+Changes Made:
+✅ Created export_to_excel.py to output stock data into an Excel file (stock_report.xlsx).
+ ✅ Stored each stock's data in separate sheets named after the stock symbol.
+ ✅ Added a summary sheet (DataOverview) displaying all stocks side by side.
+ ✅ Inserted a blank column between each stock in DataOverview for readability.
+ ✅ Applied alternating row colors (light blue) for better visualization.
+Issues Encountered:
+❌ ValueError: cannot insert, already exists when adding blank columns.
+ ✔ Solution: Fixed logic by ensuring unique column names.
+
+4️⃣ Trend Analysis & Visualization
+Changes Made:
+✅ Created analyze_stock_trends.py for moving averages & Bollinger Bands.
+ ✅ Plotted each stock’s trends using Matplotlib.
+ ✅ Saved all plots inside the analysis_plots/ directory.
+ ✅ Ensured images overwrite themselves to prevent duplicates.
+Issues Encountered:
+❌ Blank plots due to incorrect DataFrame filtering.
+ ✔ Solution: Adjusted logic to group stock data properly before plotting.
+
+5️⃣ Automation & Task Scheduling
+Changes Made:
+✅ Automated fetch_stock_data.py via Windows Task Scheduler (Runs daily at 10 PM CET).
+ ✅ Scheduled export_to_excel.py to run after fetching.
+ ✅ Ensured scripts run even when PC is asleep.
+Issues Encountered:
+❌ Task Scheduler failed to start due to incorrect user permissions.
+ ✔ Solution: Configured Task Scheduler to run scripts as admin.
+
+6️⃣ Configuration File (config.json)
+Changes Made:
+✅ Created config.json to store:
+Alpha Vantage API key
+Database file path
+Output Excel file path
+Backup folder path ✅ Updated all scripts to read from config.json instead of hardcoding values.
+Issues Encountered:
+❌ KeyError: 'output_excel' due to missing config entry.
+ ✔ Solution: Ensured config.json contains all required keys.
+
+7️⃣ Backup System
+Changes Made:
+✅ Implemented database backup system (backup.py).
+ ✅ Automatically **copies **stocks_info.db to backups/ before updates.
+ ✅ Appends timestamp to backup file names.
+Issues Encountered:
+❌ Backup system failed due to locked database.
+ ✔ Solution: Ensured SQLite connection closes before backup starts.
+
+8️⃣ Final GitHub Setup
+Steps:
+✅ Created README.md with complete setup instructions.
+ ✅ Uploaded project to GitHub.
+ ✅ Organized project structure:
+MarketDataCollector/
+│── fetch_stock_data.py         # Fetches stock data
+│── export_to_excel.py          # Exports stock data to Excel
+│── analyze_stock_trends.py     # Generates stock analysis plots
+│── backup.py                   # Creates database backups
+│── config.json                 # Stores API key & settings
+│── stocks_info.db              # SQLite database
+│── backups/                    # Stores backups
+│── analysis_plots/             # Stores stock trend images
+│── requirements.txt            # Python dependencies
+│── README.md                   # Project documentation
+
+
+Next Steps
+✅ Market Data Collector bot is complete! 🎉
+For future improvements, consider:
+Expanding analysis beyond moving averages (e.g., RSI, MACD).
+Implementing cloud-based execution to eliminate PC dependency.
+Adding automated trading signals based on historical patterns.
+This concludes the full documentation of the Market Data Collector project.
