@@ -1,0 +1,20 @@
+# Ignore Virtual Environment
+venv/
+.venv/
+
+# Ignore Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Configuration & API Keys
+config.json
+
+# Ignore SQLite Database
+stocks_info.db
+
+# Ignore Excel Output Files
+*.xlsx
+
+# Ignore Logs
+*.log
